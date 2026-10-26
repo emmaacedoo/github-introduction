@@ -1,6 +1,42 @@
+
 ---
-title: "Analysis 1"
+title: "A Beautiful Graphic"
 author: "Emma Acedo"
 format: html
+execute:
+  echo: false
 ---
-Emma Acedo is a data maestro!
+
+```{r}
+#| message: false
+
+library(tidyverse)
+```
+
+## How Has Car Fuel Efficiency Changed?
+
+This chart shows how the fuel efficiency of different cars has changed over the years.
+
+```{r}
+mpg |>
+  group_by(year, class) |>
+  summarize(avg_mpg = mean(hwy), .groups = "drop") |>
+  ggplot(aes(x = factor(year), y = avg_mpg, fill = class)) +
+  geom_col(position = "dodge", width = 0.7) +
+  scale_fill_viridis_d(option = "plasma") +
+  labs(
+    title = "Fuel Efficiency by Car Type",
+    subtitle = "Average highway MPG in 1999 and 2008",
+    x = "Year",
+    y = "Average Highway MPG",
+    fill = "Car Type",
+    caption = "Source: ggplot2 mpg dataset"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", size = 18),
+    plot.subtitle = element_text(color = "gray40"),
+    legend.position = "bottom",
+    panel.grid.minor = element_blank()
+  )
+```
